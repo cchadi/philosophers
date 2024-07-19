@@ -1,33 +1,26 @@
 #include "philo.h"
 
-int strict_check(t_philo *philo)
-{
-    if (philo->n_philo <= 0)
-        return (-1);
-    // add parsing check
-    return (0);
-}
-
-int check_args(char **ptr, t_philo *philo)
+int check_args(char **av, t_philo **philo)
 {
     int i;
     int nbr;
 
     i = 1;
-    while(ptr[i])
+    while(av[i])
     {
-        if (ft_atoi(ptr[i]) != -1 && ft_atoi(ptr[i]) >= 0)
+        nbr = ft_atoi(av[i]);
+        if (nbr != -1 && nbr >= 0 && i < 5)
             i++;
-        else 
+        else if (nbr != -1 && nbr > 0 && i == 5)
+            i++;
+        else
             return (-1);
     }
-    philo->n_philo = ft_atoi(ptr[1]);
-    philo->t_die = ft_atoi(ptr[2]);
-    philo->t_eat = ft_atoi(ptr[3]);
-    philo->t_sleep = ft_atoi(ptr[4]);
-    if (ptr[5])
-        philo->optionnel = ft_atoi(ptr[5]);
-    if (strict_check(philo) == -1)
-        return (-1);
+    (*philo)->n_philo = ft_atoi(av[1]);
+    (*philo)->t_die = ft_atoi(av[2]);
+    (*philo)->t_eat = ft_atoi(av[3]);
+    (*philo)->t_sleep = ft_atoi(av[4]);
+    if (av[5])
+        (*philo)->nbr_to_eat = ft_atoi(av[5]);
     return (0);
 }

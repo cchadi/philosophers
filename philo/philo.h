@@ -10,10 +10,10 @@
 typedef struct s_philo
 {
     int n_philo;
+    int t_die;
     int t_eat;
     int t_sleep;
-    int t_die;
-    int optionnel;
+    int nbr_to_eat;
 }   t_philo;
 
 typedef struct s_list
@@ -24,7 +24,11 @@ typedef struct s_list
 
 /************************* Philo ****************************/
 
-int check_args(char **ptr, t_philo *philo);
+void    to_eat(int time);
+void    to_sleep(int time);
+void    create_threads(int p_nbr);
+void    ft_routine(t_philo *philo);
+int     check_args(char **av, t_philo *philo);
 
 
 /*************************  42_Lib  **************************/

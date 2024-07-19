@@ -11,7 +11,7 @@ SRCS_LIBFT = 42_library/ft_atoi.c 42_library/ft_isdigit.c 42_library/ft_memset.c
 	42_library/ft_itoa.c 42_library/ft_strmapi.c 42_library/ft_striteri.c 42_library/ft_putchar_fd.c 42_library/ft_putstr_fd.c 42_library/ft_putendl_fd.c 42_library/ft_putnbr_fd.c	\
 	42_library/ft_lstadd_back.c 42_library/ft_lst_add_front.c 42_library/ft_lstlast.c 42_library/ft_lstnew.c
 
-SRCS_PHILO = tools/check_args.c tools/philo.c	\
+SRCS_PHILO = tools/check_args.c tools/philo.c tools/ft_routine.c tools/to_eat.c tools/to_sleep.c tools/create_threads.c	\
 
 OBJS = $(SRCS_LIBFT:.c=.o) $(SRCS_PHILO:.c=.o)
 
