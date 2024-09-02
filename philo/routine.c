@@ -9,7 +9,9 @@ int    is_dead(t_philo *philo)
 
 void    to_sleep(t_philo *philo)
 {
+    pthread_mutex_lock(&philo->chopstick);
     printf("philo[%d] is sleeping\n", philo->id);
+    pthread_mutex_unlock(&philo->chopstick);
     usleep(philo->info->t_sleep * 1000);
 }
 
@@ -17,7 +19,10 @@ void    to_eat(t_philo *philo)
 {
     if (philo->last_eat != 0 && is_dead(philo) == 1)
     {
+        pthread_mutex_lock(&philo->deadlock);
         philo->is_dead = 1;
+        printf("philo[%d] is dead\n", philo->id);
+        pthread_mutex_unlock(&philo->deadlock);
     }
     else
     {
@@ -29,8 +34,8 @@ void    to_eat(t_philo *philo)
         printf("philo[%d] is eating\n", philo->id);
         usleep(philo->info->t_eat * 1000);
 
-        pthread_mutex_unlock(&philo->chopstick);
         pthread_mutex_unlock(&philo->next->chopstick);
+        pthread_mutex_unlock(&philo->chopstick);
 
         printf("philo[%d] Finished eating\n", philo->id);
         philo->last_eat = get_current();

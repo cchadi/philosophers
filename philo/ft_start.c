@@ -11,6 +11,7 @@ void init_chopsticks(t_philo *head)
     {
         flag = 0;
         pthread_mutex_init(&head->chopstick, NULL);
+        pthread_mutex_init(&head->deadlock, NULL);
         head = head->next;
     }
     return;
@@ -30,7 +31,7 @@ void create_threads(t_philo *philo)
     {
         flag = 0;
         pthread_create(&head->philo, NULL, (void *)&routine, head);
-        usleep(10);
+        usleep(500);
         head = head->next;
     }
     flag = 1;
@@ -41,7 +42,7 @@ void create_threads(t_philo *philo)
         head = head->next;
     }
     checker = lst_new(NULL, -5);
-    pthread_create(&checker->philo, NULL, (void *)&checking, head);
+    pthread_create(&checker->philo, NULL, (void *)&checking, head); 
     pthread_join(checker->philo, NULL);
     printf("finish\n");
     return;

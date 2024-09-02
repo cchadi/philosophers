@@ -24,6 +24,7 @@ typedef struct s_philo
     pthread_t philo;
     t_global *info;
     pthread_mutex_t chopstick;
+    pthread_mutex_t deadlock;
     struct s_philo *next;
 }   t_philo;
 

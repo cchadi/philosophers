@@ -7,11 +7,12 @@ int    checking(t_philo *philo)
     head = philo;
     while(1)
     {
+        pthread_mutex_lock(&head->deadlock);
         if (head->is_dead == 1)
         {
-            printf("philo[%d] is dead\n", head->id);
             break;
         }
+        pthread_mutex_unlock(&head->deadlock);
         head = head->next;
     }
     return (0);
