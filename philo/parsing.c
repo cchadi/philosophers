@@ -1,22 +1,30 @@
 #include "philosophers.h"
 
+t_global *new()
+{
+    t_global *new = malloc(1 * sizeof(t_global));
+    new->n_philo = 0;
+    new->nbr_to_eat = -1;
+    new->t_die = 0;
+    new->t_sleep = 0;
+    return (new);
+}
+
 t_global *parsing(char **av)
 {
     int i;
     int nbr;
     t_global *philo;
     
-    philo = malloc(sizeof(t_global));
+    philo = new();
     i = 1;
     while(av[i])
     {
         nbr = ft_atoi(av[i]);
-        if (nbr != -1 && nbr >= 0 && i < 5)
-            i++;
-        else if (nbr != -1 && nbr > 0 && i == 5)
+        if (nbr != -1 && nbr >= 0 && i <= 5)
             i++;
         else
-            return (NULL);
+            return (free(new), NULL);
     }
     philo->n_philo = ft_atoi(av[1]);
     philo->t_die = ft_atoi(av[2]);

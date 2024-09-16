@@ -1,49 +1,51 @@
 #include "philosophers.h"
 
-int    is_dead(t_philo *philo)
-{
-    if ((get_current() - philo->last_eat) > philo->info->t_die)
-        return (1);
-    return (0);
-}
-
 void    to_sleep(t_philo *philo)
 {
-    pthread_mutex_lock(&philo->chopstick);
-    printf("philo[%d] is sleeping\n", philo->id);
-    pthread_mutex_unlock(&philo->chopstick);
+    if (philo->philo_eat == philo->info->nbr_to_eat)
+        return ;
+    print_msg(philo, "is sleeping");
     usleep(philo->info->t_sleep * 1000);
+    print_msg(philo, "is thinking");
+    usleep(100);
 }
 
 void    to_eat(t_philo *philo)
 {
-    if (philo->last_eat != 0 && is_dead(philo) == 1)
+    if (philo->philo_eat == philo->info->nbr_to_eat)
     {
-        pthread_mutex_lock(&philo->deadlock);
-        philo->is_dead = 1;
-        printf("philo[%d] is dead\n", philo->id);
-        pthread_mutex_unlock(&philo->deadlock);
+        pthread_mutex_lock(&philo->dead_flag);
+        philo->is_dead = 2;
+        pthread_mutex_unlock(&philo->dead_flag);
+        return ;
+    }
+    if (is_dead(philo) == 0)
+    {
+        pthread_mutex_lock(&philo->chopstick);
+        print_msg(philo, "has taken one fork");
+        pthread_mutex_lock(&philo->next->chopstick);
+        print_msg(philo, "has taken one fork");
+        print_msg(philo, "is eating");
+        usleep(philo->info->t_eat * 1000);
+        pthread_mutex_unlock(&philo->chopstick);
+        pthread_mutex_unlock(&philo->next->chopstick);
+        philo->philo_eat++;
+        pthread_mutex_lock(&philo->eat_flag);
+        philo->last_eat = get_current();
+        pthread_mutex_unlock(&philo->eat_flag);
     }
     else
     {
-        printf("philo[%d] is thinking\n", philo->id);
-        
-        pthread_mutex_lock(&philo->chopstick);
-        pthread_mutex_lock(&philo->next->chopstick);
-
-        printf("philo[%d] is eating\n", philo->id);
-        usleep(philo->info->t_eat * 1000);
-
-        pthread_mutex_unlock(&philo->next->chopstick);
-        pthread_mutex_unlock(&philo->chopstick);
-
-        printf("philo[%d] Finished eating\n", philo->id);
-        philo->last_eat = get_current();
+        pthread_mutex_lock(&philo->dead_flag);
+        philo->is_dead = 1;
+        pthread_mutex_unlock(&philo->dead_flag);
+        return ;
     }
 }
 
 void    *routine(t_philo *philo)
 {
+    printf("philo[%d] enter to routine\n", philo->id);
     while(1)
     {
         to_eat(philo);
