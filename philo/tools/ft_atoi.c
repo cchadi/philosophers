@@ -1,35 +1,51 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: csaidi <csaidi@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/18 13:07:18 by csaidi            #+#    #+#             */
+/*   Updated: 2024/09/18 13:07:19 by csaidi           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../philosophers.h"
 
-int	convert_ascii(const char *str, int i)
+long	convert_ascii(const char *str, int i, int sign)
 {
-	int	n;
+	long	n;
 
 	n = 0;
 	while (str[i] >= '0' && str[i] <= '9')
 	{
 		n = n * 10 + (str[i] - 48);
 		i++;
+		if (n > INT_MAX || n < INT_MIN)
+			return (-1);
 	}
-	return (n);
+	if (str[i])
+		return (-1);
+	return (n * sign);
 }
 
-int	ft_atoi(const char *str)
+long	ft_atoi(const char *str)
 {
 	int		i;
-	int		l;
-	int		result;
+	int		sign;
+	long	result;
 
 	i = 0;
-	l = 1;
+	sign = 1;
 	if (!str[0] || !str)
 		return (0);
-	while ((str[i] >= 9 && str[i] <= 13) || str[i] == ' ' || str[i] == 0)
+	while (str[i] == 0)
 		i++;
 	while (str[i] == '-' || str[i] == '+')
 	{
 		if (str[i] == '-' && str[i + 1] >= '0' && str[i + 1] <= '9')
 		{
-			l = -1;
+			sign = -1;
 			i++;
 		}
 		else if (str[i] == '+' && str[i + 1] >= '0' && str[i + 1] <= '9')
@@ -37,6 +53,6 @@ int	ft_atoi(const char *str)
 		else
 			return (0);
 	}
-	result = convert_ascii(str, i);
-	return (result * l);
+	result = convert_ascii(str, i, sign);
+	return ((long)result);
 }

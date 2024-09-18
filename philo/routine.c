@@ -1,55 +1,85 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   routine.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: csaidi <csaidi@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/18 12:03:39 by csaidi            #+#    #+#             */
+/*   Updated: 2024/09/18 12:47:07 by csaidi           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philosophers.h"
 
-void    to_sleep(t_philo *philo)
+void	lock_forks(t_philo *p)
 {
-    if (philo->philo_eat == philo->info->nbr_to_eat)
-        return ;
-    print_msg(philo, "is sleeping");
-    usleep(philo->info->t_sleep * 1000);
-    print_msg(philo, "is thinking");
-    usleep(100);
+	if (p->id % 2 == 0)
+	{
+		pthread_mutex_lock(&p->next->chopstick);
+		pthread_mutex_lock(&p->chopstick);
+	}
+	else
+	{
+		pthread_mutex_lock(&p->chopstick);
+		pthread_mutex_lock(&p->next->chopstick);
+	}
 }
 
-void    to_eat(t_philo *philo)
+void	unlock_forks(t_philo *p)
 {
-    if (philo->philo_eat == philo->info->nbr_to_eat)
-    {
-        pthread_mutex_lock(&philo->dead_flag);
-        philo->is_dead = 2;
-        pthread_mutex_unlock(&philo->dead_flag);
-        return ;
-    }
-    if (is_dead(philo) == 0)
-    {
-        pthread_mutex_lock(&philo->chopstick);
-        print_msg(philo, "has taken one fork");
-        pthread_mutex_lock(&philo->next->chopstick);
-        print_msg(philo, "has taken one fork");
-        print_msg(philo, "is eating");
-        usleep(philo->info->t_eat * 1000);
-        pthread_mutex_unlock(&philo->chopstick);
-        pthread_mutex_unlock(&philo->next->chopstick);
-        philo->philo_eat++;
-        pthread_mutex_lock(&philo->eat_flag);
-        philo->last_eat = get_current();
-        pthread_mutex_unlock(&philo->eat_flag);
-    }
-    else
-    {
-        pthread_mutex_lock(&philo->dead_flag);
-        philo->is_dead = 1;
-        pthread_mutex_unlock(&philo->dead_flag);
-        return ;
-    }
+	pthread_mutex_unlock(&p->chopstick);
+	pthread_mutex_unlock(&p->next->chopstick);
 }
 
-void    *routine(t_philo *philo)
+void	to_sleep(t_philo *philo)
 {
-    printf("philo[%d] enter to routine\n", philo->id);
-    while(1)
-    {
-        to_eat(philo);
-        to_sleep(philo);
-    }
-    return (NULL);
+	pthread_mutex_lock(&philo->info->dead_flag);
+	if (philo->philo_eat == philo->info->nbr_to_eat
+		|| philo->info->is_dead == 1)
+	{
+		pthread_mutex_unlock(&philo->info->dead_flag);
+		return ;
+	}
+	pthread_mutex_unlock(&philo->info->dead_flag);
+	print_msg(philo, "is sleeping");
+	ft_sleep(philo, philo->info->t_sleep);
+	print_msg(philo, "is thinking");
+	usleep(10);
+}
+
+void	to_eat(t_philo *p)
+{
+	if (is_dead(p) == 0 && p->philo_eat != -2 && eating_times(p) == 0)
+	{
+		lock_forks(p);
+		print_msg(p, "has taken  fork");
+		print_msg(p, "has taken  fork");
+		print_msg(p, "is eating");
+		pthread_mutex_lock(&p->info->eat_flag);
+		p->last_eat = get_current();
+		pthread_mutex_unlock(&p->info->eat_flag);
+		ft_sleep(p, p->info->t_eat);
+		unlock_forks(p);
+		pthread_mutex_lock(&p->info->eat_flag);
+		p->philo_eat++;
+		pthread_mutex_unlock(&p->info->eat_flag);
+	}
+	else
+	{
+		pthread_mutex_lock(&p->info->dead_flag);
+		p->info->is_dead = 1;
+		pthread_mutex_unlock(&p->info->dead_flag);
+		return ;
+	}
+}
+
+void	*routine(t_philo *philo)
+{
+	while (1)
+	{
+		to_eat(philo);
+		to_sleep(philo);
+	}
+	return (NULL);
 }

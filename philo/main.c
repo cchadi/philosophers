@@ -1,12 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: csaidi <csaidi@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/18 12:03:52 by csaidi            #+#    #+#             */
+/*   Updated: 2024/09/18 12:03:53 by csaidi           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philosophers.h"
 
-int main(int ac, char **av)
+int	main(int ac, char **av)
 {
-    if (ac >= 5 && ac <= 6)
-    {
-        ft_start(parsing(av));
-    }
-    else
-        write(2, "invalid arguments!\n", 20);
-    return (0);
+	if (ac >= 5 && ac <= 6)
+	{
+		ft_start(parsing(av));
+	}
+	else
+		write(2, "invalid arguments!\n", 20);
+	return (0);
 }
