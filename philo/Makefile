@@ -2,10 +2,10 @@ CC = cc
 
 CFLAGS = -Wall -Wextra -Werror
 
-NAME = philo 
+NAME = philo
 
 SRCS_PHILO = tools/ft_atoi.c tools/linked_list.c tools/utils.c \
-	main.c parsing.c ft_start.c routine.c checking.c \
+	main.c parsing.c ft_start.c routine.c checking.c tools/ft_free.c \
 
 OBJS = $(SRCS_PHILO:.c=.o)
 

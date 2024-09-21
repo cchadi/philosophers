@@ -6,7 +6,7 @@
 /*   By: csaidi <csaidi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 12:03:44 by csaidi            #+#    #+#             */
-/*   Updated: 2024/09/18 12:48:23 by csaidi           ###   ########.fr       */
+/*   Updated: 2024/09/21 19:47:22 by csaidi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ t_philo				*lst_new(t_global *g, int id);
 t_philo				*linked_list(t_global *g);
 int					checking(t_philo *philo);
 int					eating_times(t_philo *p);
+void				ft_free(t_philo *philo);
 long				get_current(void);
 
 #endif

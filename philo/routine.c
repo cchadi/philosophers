@@ -6,13 +6,13 @@
 /*   By: csaidi <csaidi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 12:03:39 by csaidi            #+#    #+#             */
-/*   Updated: 2024/09/20 16:33:40 by csaidi           ###   ########.fr       */
+/*   Updated: 2024/09/21 19:38:13 by csaidi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-void lock_forks(t_philo *p)
+void	lock_forks(t_philo *p)
 {
 	if (p->id % 2 == 0)
 	{
@@ -26,19 +26,20 @@ void lock_forks(t_philo *p)
 	}
 }
 
-void unlock_forks(t_philo *p)
+void	unlock_forks(t_philo *p)
 {
 	pthread_mutex_unlock(&p->chopstick);
 	pthread_mutex_unlock(&p->next->chopstick);
 }
 
-void to_sleep(t_philo *philo)
+void	to_sleep(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->info->dead_flag);
-	if (philo->info->nbr_eating == philo->info->n_philo || philo->info->is_dead == 1)
+	if (philo->philo_eat == -2
+		|| philo->info->is_dead == 1)
 	{
 		pthread_mutex_unlock(&philo->info->dead_flag);
-		return;
+		return ;
 	}
 	pthread_mutex_unlock(&philo->info->dead_flag);
 	print_msg(philo, "is sleeping");
@@ -47,7 +48,7 @@ void to_sleep(t_philo *philo)
 	usleep(10);
 }
 
-void to_eat(t_philo *p)
+void	to_eat(t_philo *p)
 {
 	if (is_dead(p) == 0 && p->philo_eat != -2 && eating_times(p) == 0)
 	{
@@ -56,7 +57,7 @@ void to_eat(t_philo *p)
 		print_msg(p, "has taken  fork");
 		print_msg(p, "is eating");
 		if (is_dead(p))
-			return;
+			return ;
 		pthread_mutex_lock(&p->info->eat_flag);
 		p->last_eat = get_current();
 		pthread_mutex_unlock(&p->info->eat_flag);
@@ -68,7 +69,7 @@ void to_eat(t_philo *p)
 	}
 }
 
-void *routine(t_philo *philo)
+void	*routine(t_philo *philo)
 {
 	if (philo->id % 2 == 0)
 		usleep(250);
