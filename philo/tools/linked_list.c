@@ -6,7 +6,7 @@
 /*   By: csaidi <csaidi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 12:04:13 by csaidi            #+#    #+#             */
-/*   Updated: 2024/09/18 12:22:02 by csaidi           ###   ########.fr       */
+/*   Updated: 2024/09/21 09:46:29 by csaidi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ t_philo	*linked_list(t_global *g)
 	t_philo	*new;
 	int		i;
 
+	if (g->n_philo <= 0)
+		return (NULL);
 	head = NULL;
 	i = 1;
 	while (i <= g->n_philo)

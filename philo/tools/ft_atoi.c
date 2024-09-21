@@ -6,7 +6,7 @@
 /*   By: csaidi <csaidi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 13:07:18 by csaidi            #+#    #+#             */
-/*   Updated: 2024/09/18 13:07:19 by csaidi           ###   ########.fr       */
+/*   Updated: 2024/09/21 09:55:15 by csaidi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ long	ft_atoi(const char *str)
 	i = 0;
 	sign = 1;
 	if (!str[0] || !str)
-		return (0);
+		return (-1);
 	while (str[i] == 0)
 		i++;
 	while (str[i] == '-' || str[i] == '+')
@@ -51,7 +51,7 @@ long	ft_atoi(const char *str)
 		else if (str[i] == '+' && str[i + 1] >= '0' && str[i + 1] <= '9')
 			i++;
 		else
-			return (0);
+			return (-1);
 	}
 	result = convert_ascii(str, i, sign);
 	return ((long)result);

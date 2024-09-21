@@ -6,7 +6,7 @@
 /*   By: csaidi <csaidi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 12:04:16 by csaidi            #+#    #+#             */
-/*   Updated: 2024/09/18 13:07:46 by csaidi           ###   ########.fr       */
+/*   Updated: 2024/09/20 16:17:43 by csaidi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	ft_sleep(t_philo *p, int t)
 
 	(void)p;
 	time = get_current();
-	while (time + t > get_current())
+	while (time + t > get_current() && !is_dead(p))
 	{
 		usleep(100);
 	}
@@ -50,7 +50,7 @@ int	is_dead(t_philo *p)
 void	print_msg(t_philo *p, char *msg)
 {
 	pthread_mutex_lock(&p->info->dead_flag);
-	if (p->info->is_dead == 0)
+	if (p->info->is_dead == 0 && p->info->nbr_eating != p->info->n_philo)
 	{
 		printf("%ld %d %s\n", (get_current() - p->info->start), p->id, msg);
 	}

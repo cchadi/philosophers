@@ -6,7 +6,7 @@
 /*   By: csaidi <csaidi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 12:03:56 by csaidi            #+#    #+#             */
-/*   Updated: 2024/09/18 12:32:20 by csaidi           ###   ########.fr       */
+/*   Updated: 2024/09/21 09:47:10 by csaidi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ void	create_threads(t_philo *philo)
 	t_philo	*tmp;
 	int		flag;
 
+	if (!philo)
+		return ;
 	flag = 1;
 	tmp = philo;
 	head = philo;
@@ -43,7 +45,6 @@ void	create_threads(t_philo *philo)
 	{
 		flag = 0;
 		pthread_create(&head->philo, NULL, (void *)&routine, head);
-		usleep(3);
 		head = head->next;
 	}
 	detach_threads(philo);
