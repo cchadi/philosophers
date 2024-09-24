@@ -6,7 +6,7 @@
 /*   By: csaidi <csaidi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 12:03:59 by csaidi            #+#    #+#             */
-/*   Updated: 2024/09/24 18:24:39 by csaidi           ###   ########.fr       */
+/*   Updated: 2024/09/24 19:07:10 by csaidi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int	checking(t_philo *philo)
 			break ;
 		}
 		pthread_mutex_lock(&p->info->dead_flag);
+		// printf("h=[%d]\n", p->info->nbr_eating);
 		if (p->info->nbr_eating == p->info->n_philo)
 		{
 			pthread_mutex_unlock(&p->info->dead_flag);

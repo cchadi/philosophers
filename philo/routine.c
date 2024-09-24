@@ -6,7 +6,7 @@
 /*   By: csaidi <csaidi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 12:03:39 by csaidi            #+#    #+#             */
-/*   Updated: 2024/09/24 18:24:20 by csaidi           ###   ########.fr       */
+/*   Updated: 2024/09/24 19:17:39 by csaidi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ int	to_eat(t_philo *p)
 		pthread_mutex_lock(&p->info->eat_flag);
 		p->philo_eat++;
 		pthread_mutex_unlock(&p->info->eat_flag);
+		eating_times(p);
 		return (0);
 	}
 	else
