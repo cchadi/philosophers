@@ -6,7 +6,7 @@
 /*   By: csaidi <csaidi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 12:03:39 by csaidi            #+#    #+#             */
-/*   Updated: 2024/09/21 19:38:13 by csaidi           ###   ########.fr       */
+/*   Updated: 2024/09/24 18:24:20 by csaidi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,32 +32,34 @@ void	unlock_forks(t_philo *p)
 	pthread_mutex_unlock(&p->next->chopstick);
 }
 
-void	to_sleep(t_philo *philo)
+int	to_sleep(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->info->dead_flag);
 	if (philo->philo_eat == -2
 		|| philo->info->is_dead == 1)
 	{
 		pthread_mutex_unlock(&philo->info->dead_flag);
-		return ;
+		return (1);
 	}
 	pthread_mutex_unlock(&philo->info->dead_flag);
-	print_msg(philo, "is sleeping");
+	if (print_msg(philo, "is sleeping") == 1)
+		return (1);
 	ft_sleep(philo, philo->info->t_sleep);
-	print_msg(philo, "is thinking");
-	usleep(10);
+	if (print_msg(philo, "is thinking") == 1)
+		return (1);
+	return (0);
 }
 
-void	to_eat(t_philo *p)
+int	to_eat(t_philo *p)
 {
 	if (is_dead(p) == 0 && p->philo_eat != -2 && eating_times(p) == 0)
 	{
 		lock_forks(p);
-		print_msg(p, "has taken  fork");
-		print_msg(p, "has taken  fork");
+		print_msg(p, "has taken fork");
+		print_msg(p, "has taken fork");
 		print_msg(p, "is eating");
 		if (is_dead(p))
-			return ;
+			return (1);
 		pthread_mutex_lock(&p->info->eat_flag);
 		p->last_eat = get_current();
 		pthread_mutex_unlock(&p->info->eat_flag);
@@ -66,6 +68,11 @@ void	to_eat(t_philo *p)
 		pthread_mutex_lock(&p->info->eat_flag);
 		p->philo_eat++;
 		pthread_mutex_unlock(&p->info->eat_flag);
+		return (0);
+	}
+	else
+	{
+		return (1);
 	}
 }
 
@@ -75,8 +82,10 @@ void	*routine(t_philo *philo)
 		usleep(250);
 	while (1)
 	{
-		to_eat(philo);
-		to_sleep(philo);
+		if (to_eat(philo) == 1)
+			break ;
+		if (to_sleep(philo) == 1)
+			break ;
 		usleep(100);
 	}
 	return (NULL);

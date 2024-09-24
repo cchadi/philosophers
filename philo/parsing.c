@@ -6,7 +6,7 @@
 /*   By: csaidi <csaidi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 12:03:48 by csaidi            #+#    #+#             */
-/*   Updated: 2024/09/18 12:36:19 by csaidi           ###   ########.fr       */
+/*   Updated: 2024/09/22 16:05:56 by csaidi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_global	*new(void)
 	new->t_die = 0;
 	new->t_sleep = 0;
 	new->is_dead = 0;
-	new->nbr_eating = 0;
+	new->nbr_eating = 1;
 	return (new);
 }
 

@@ -6,13 +6,13 @@
 /*   By: csaidi <csaidi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 12:03:56 by csaidi            #+#    #+#             */
-/*   Updated: 2024/09/21 20:35:06 by csaidi           ###   ########.fr       */
+/*   Updated: 2024/09/23 18:39:00 by csaidi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-void	detach_threads(t_philo *philo)
+void	join_threads(t_philo *philo)
 {
 	t_philo	*head;
 	t_philo	*tmp;
@@ -24,17 +24,17 @@ void	detach_threads(t_philo *philo)
 	while ((head != tmp) || flag == 0)
 	{
 		flag = 1;
-		pthread_detach(head->philo);
+		pthread_join(head->philo, NULL);
 		head = head->next;
 	}
 }
 
 void	create_threads(t_philo *philo)
 {
-	t_philo	*checker;
-	t_philo	*head;
-	t_philo	*tmp;
-	int		flag;
+	pthread_t		checker;
+	t_philo			*head;
+	t_philo			*tmp;
+	int				flag;
 
 	if (!philo)
 		return ;
@@ -47,12 +47,9 @@ void	create_threads(t_philo *philo)
 		pthread_create(&head->philo, NULL, (void *)&routine, head);
 		head = head->next;
 	}
-	detach_threads(philo);
-	head = philo;
-	checker = lst_new(NULL, -5);
-	pthread_create(&checker->philo, NULL, (void *)&checking, head);
-	pthread_join(checker->philo, NULL);
-	free(checker);
+	pthread_create(&checker, NULL, (void *)&checking, philo);
+	join_threads(philo);
+	pthread_join(checker, NULL);
 	return ;
 }
 

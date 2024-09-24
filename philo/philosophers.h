@@ -6,7 +6,7 @@
 /*   By: csaidi <csaidi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 12:03:44 by csaidi            #+#    #+#             */
-/*   Updated: 2024/09/21 19:47:22 by csaidi           ###   ########.fr       */
+/*   Updated: 2024/09/24 17:57:14 by csaidi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,10 @@ typedef struct s_philo
 
 t_global			*parsing(char **av);
 void				ft_start(t_global *g);
-void				to_eat(t_philo *philo);
+int					to_eat(t_philo *philo);
 int					is_dead(t_philo *philo);
 void				*routine(t_philo *philo);
-void				to_sleep(t_philo *philo);
+int					to_sleep(t_philo *philo);
 
 /*************************  Tools  **************************/
 
@@ -60,7 +60,7 @@ long				ft_atoi(const char *str);
 void				ft_sleep(t_philo *p, int t);
 t_philo				*lst_last(t_philo *node);
 void				add_nextback(t_philo **head);
-void				print_msg(t_philo *philo, char *msg);
+int					print_msg(t_philo *philo, char *msg);
 void				lst_addback(t_philo **head, t_philo *new);
 t_philo				*lst_new(t_global *g, int id);
 t_philo				*linked_list(t_global *g);
